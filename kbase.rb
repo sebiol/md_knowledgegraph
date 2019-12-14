@@ -3,7 +3,7 @@ options = {:link => :all, :store_index => true, :generate_index_files => true}
 path = "./"
 
 OptionParser.new do |opts|
-  opts.banner = "Usage: kgraph [options] [path]\nDefaults: kgraph -l all -s ." + File::SEPARATOR
+  opts.banner = "Usage: kbase [options] [path]\nDefaults: kbase -l all -s ." + File::SEPARATOR
   opts.on("-c", "--configfile [FILE]", String, "Config File to use") do |configfile|
     options[:configfile] = configfile
   end
