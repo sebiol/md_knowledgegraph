@@ -1,11 +1,11 @@
 class KBaseNode
-    attr_reader :title, :summary, :tags, :path
+    attr_reader :title, :summary, :tags, :path, :relPath, :filename
 
     def initialize(title, summary, tags, path)
-        @title = title
-        @summary = summary
-        @tags = tags
+        @title = title ? title : File.basename(path, ".*")
         @path = path
+        @summary = summary ? summary : "NA"
+        @tags = tags ? tags : []
      end
 
      def ==(other)
@@ -17,5 +17,13 @@ class KBaseNode
 
      def hash
         @title.hash
+     end
+
+     def relPath
+      File.dirname(@path)
+     end
+
+     def filename
+      File.basename(@path)
      end
 end

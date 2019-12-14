@@ -1,5 +1,6 @@
 require 'optionparser'
 require_relative './kbase_file_parser'
+require_relative './kbase_tag_index_writer'
 
 options = {:link => :all, :store_index => true, :generate_index_files => true}
 path = "./"
@@ -31,4 +32,9 @@ pp path
 
 parser = KBaseFileParser.new
 my_index = parser.parseDir(path)
-pp my_index
+writer = KBaseTagIndexWriter.new(path)
+
+tags = my_index.nodes_by_tag
+tags.each do |tag, nodes|
+  writer.writeTagIndex(tag, nodes)
+end
