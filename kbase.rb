@@ -1,4 +1,6 @@
 require 'optionparser'
+require_relative './kbase_file_parser'
+
 options = {:link => :all, :store_index => true, :generate_index_files => true}
 path = "./"
 
@@ -26,3 +28,7 @@ if ARGV[0]
 end
 
 pp path
+
+parser = KBaseFileParser.new
+my_index = parser.parseDir(path)
+pp my_index

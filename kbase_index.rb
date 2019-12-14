@@ -6,6 +6,7 @@ class KBaseIndex
     end
 
     def addNode(node)
+        return if !node
         @nodes_by_title[node.title] = node
     end
 
