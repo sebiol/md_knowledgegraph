@@ -40,7 +40,7 @@ class KBaseFileParser
                 when 'summary'
                     node_summary = captures[0][1].strip
                 when 'tags'
-                    node_tags = captures[0][1].strip.split(",")
+                    node_tags = captures[0][1].strip.split(",").collect(&:strip)
                 end
 
                 if node_title and node_summary and node_tags
