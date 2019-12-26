@@ -34,7 +34,9 @@ parser = KBaseFileParser.new
 my_index = parser.parseDir(path)
 writer = KBaseTagIndexWriter.new(path)
 
+pp my_index
+
 tags = my_index.nodes_by_tag
-tags.each do |tag, nodes|
-  writer.writeTagIndex(tag, nodes)
+tags.each_value do |tag|
+  writer.writeTagIndex(tag)
 end
