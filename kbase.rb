@@ -2,8 +2,9 @@ require 'optionparser'
 require_relative './kbase_file_parser'
 require_relative './kbase_tag_index_writer'
 require_relative './kbase_documentlinker'
+require_relative './kbase_index_serializer'
 
-options = {:link => :all, :store_index => true, :generate_index_files => true}
+options = {:link => :all, :store_index => false, :generate_index_files => true}
 path = "./"
 
 OptionParser.new do |opts|
@@ -38,3 +39,8 @@ writer.writeTagIndexToDocuments(my_index)
 
 documentLinker = KBaseDocumentLinker.new(path, my_index)
 documentLinker.linkAllDocumentsInPath()
+
+if (options[:store_index])
+  serializer = KBaseIndexSerializer.new(path)
+  serializer.serializeIndexToJSon(my_index)
+end

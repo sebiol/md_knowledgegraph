@@ -1,3 +1,5 @@
+require 'json'
+
 class KBaseNode
     attr_reader :title, :summary, :tags, :path, :relPath, :filename
 
@@ -27,6 +29,20 @@ class KBaseNode
       File.basename(@path)
      end
 
+   def to_json(*args)
+      {
+         JSON.create_id => self.class.name,
+         'title' => @title,
+         'summary' => @summary,
+         'path' => @path,
+         'tags' => @tags.to_json
+      }.to_json(*args)
+   end
+
+   def self.json_create(h)
+      new(h['title'],h['summary'],h['tags'],h['path'])
+   end
+
      private
 
      # Strips the link formatting from tags
@@ -49,5 +65,5 @@ class KBaseNode
             tag[/@([^\]]*)/,1]
          end
       end
-     end
+   end
 end
