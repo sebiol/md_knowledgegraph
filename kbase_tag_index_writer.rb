@@ -6,15 +6,22 @@ class KBaseTagIndexWriter
         @basePath = basePath
     end
 
-    def writeTagIndex(tag)
+    def writeTagIndexToDocuments(index)
+        index.nodes_by_tag.each_value do |tag|
+            writeTagIndexDocument(tag)
+        end
+    end
+
+    private 
+
+    ## Write a single Tag Document
+    def writeTagIndexDocument(tag)
         return if !tag
 
         File.open(File.join(@basePath, tag.name + ".md"), "w") do |file|
             writeTagToFile(file, tag, 1)
         end
     end
-
-    private 
 
     ## Write tags to an opened file recursively
     def writeTagToFile(file, tag, hierarchy_level)
