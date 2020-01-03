@@ -34,24 +34,42 @@ class KBaseDocumentLinker
     private
 
     def updateLine(line)
-        #scanForLinks = /\[([^\]]+)\]\(([^\)]+)\)/ can return multiple matches
-        #scanForIncludes = /^(.+)\[>([^\]]+)\]\(([^\)]+)\)(.*)$/ should return a singe match
-
         # Check for includes
-       preambel, title, path, summary = line.scan(/^(.+)\[>([^\]]+)\]\(([^\)]+)\)(.*)$/)[0]
+        scanForIncludes = /^(.+)\[>([^\]]+)\]\(([^\)]+)\)(.*)$/
+        preambel, title, path, summary = line.scan(scanForIncludes)[0]
         if title
-            #puts "#{preambel} ; #{title} ; #{path} ; #{summary}"
-            #puts title.strip
             node = @index.getNodeByTitle(title.strip)
             if node
-                #pp node
                 return "#{preambel}[> #{node.title}](#{node.path}) #{node.summary}"
             end
         end 
 
-        #puts line.scan(/\[([^>\]][^\]]+)\]\(([^\)]+)\)/)
-        # check link
+        # Update paths for any links found were the link name matches a title from a node
+        # Todo: guard with check for a local link 
+        # Todo: guard against multiple ndoes with same title
+        # Todo: Handle updated titles, when path matches a file?
+        scanForLinksToUpdate = /\[([^\]]+)\]\(([^\)]+)\)/
+        line.gsub!(scanForLinksToUpdate) do |match|
+            node = @index.getNodeByTitle($1.strip)
+            if node
+                "[#{node.title}](#{node.path})"
+            else
+                match
+            end
+        end
         
+        # Add new LInks by Title
+        # New links can be specified as "[[New Link]]" without the path
+        scanForNewLinks = /\[\[([^\]]+)\]\]/
+        line.gsub!(scanForNewLinks) do |match|
+            node = @index.getNodeByTitle($1.strip)
+            if node
+                "[#{node.title}](#{node.path})"
+            else
+                match
+            end
+        end
+
         return line
     end
 
