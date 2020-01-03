@@ -18,12 +18,13 @@ class KBaseDocumentLinker
         end
     end
 
+    private
+
     def updateLinksInDocument(filePath)
         File.open(filePath, "r") do |file|
             File.open(filePath + ".tmp", "w") do |outFile|
                 file.each_line do |line|
                     updatedLine = updateLine(line)
-                    #puts updatedLine
                     outFile.puts(updatedLine)
                 end
             end
@@ -31,16 +32,15 @@ class KBaseDocumentLinker
         File.rename filePath + ".tmp", filePath
     end
 
-    private
-
     def updateLine(line)
         # Check for includes
         scanForIncludes = /^(.+)\[>([^\]]+)\]\(([^\)]+)\)(.*)$/
         preambel, title, path, summary = line.scan(scanForIncludes)[0]
         if title
             node = @index.getNodeByTitle(title.strip)
+            # TODO also use gsub to preserve line endings
             if node
-                return "#{preambel}[> #{node.title}](#{node.path}) #{node.summary}"
+                return "#{preambel}[> #{node.title}](#{node.path}) #{node.summary}\r"
             end
         end 
 

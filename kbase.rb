@@ -37,4 +37,4 @@ writer = KBaseTagIndexWriter.new(path)
 writer.writeTagIndexToDocuments(my_index)
 
 documentLinker = KBaseDocumentLinker.new(path, my_index)
-documentLinker.updateLinksInDocument(ARGV[1])
+documentLinker.linkAllDocumentsInPath()
