@@ -44,6 +44,15 @@ class KBaseDocumentLinker
             end
         end 
 
+        # Update paths for any tags, that are already formatted as links
+        scanForTagLink = /\[@([^\]]+)\]\(([^\)]+)\)/
+        line.gsub!(scanForTagLink) do |match|
+            # clean tag, remove subtag if present
+            tagName = $1.strip
+            tagIndexDocument = tagName.gsub(/::.*$/,'')
+            "[@#{tagName}](#{File.join("", "#{tagIndexDocument}.md")})"
+        end
+
         # Update paths for any links found were the link name matches a title from a node
         # Todo: guard with check for a local link 
         # Todo: guard against multiple ndoes with same title
