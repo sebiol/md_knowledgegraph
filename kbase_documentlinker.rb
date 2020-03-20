@@ -40,7 +40,7 @@ class KBaseDocumentLinker
             node = @index.getNodeByTitle(title.strip)
             # TODO also use gsub to preserve line endings
             if node
-                return "#{preambel}[> #{node.title}](#{node.path}) #{node.summary}\r"
+                return "#{preambel}[> #{node.title}](#{File.join("", node.path)}) #{node.summary}\r"
             end
         end 
 
