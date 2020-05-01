@@ -55,7 +55,7 @@ class KBaseNode
       return [] if !tags
       return [] if !tags.respond_to?('map')
 
-      tags.map do |tag|
+      tmpTags = tags.map do |tag|
          if !tag["@"]
             # if the tag does not contain an "@" it is in the old format and should be used as is
             tag
@@ -65,5 +65,8 @@ class KBaseNode
             tag[/@([^\]]*)/,1]
          end
       end
+      
+      # remove empty tags
+      tmpTags.reject(&:empty?)
    end
 end

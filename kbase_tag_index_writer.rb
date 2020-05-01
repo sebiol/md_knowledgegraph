@@ -18,6 +18,12 @@ class KBaseTagIndexWriter
     def writeTagIndexDocument(tag)
         return if !tag
 
+        if tag.name.nil? or tag.name.empty?
+            puts "Empty Tag found:"
+            pp tag
+            return
+        end
+
         File.open(File.join(@basePath, tag.name + ".md"), "w") do |file|
             writeTagToFile(file, tag, 1)
         end
